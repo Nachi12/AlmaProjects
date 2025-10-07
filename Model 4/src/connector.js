@@ -1,0 +1,17 @@
+const mysql = require('mysql2');
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'NewPassword@9380', 
+  database: 'zomato_db' 
+});
+
+connection.connect((err) => {
+  if (err) {
+    console.error('failed to connect to mysql server/database', err);
+    return;
+  }
+  console.log('Connected to MySQL database');
+});
+
+module.exports = connection;

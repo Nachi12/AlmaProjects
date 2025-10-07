@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Set character encoding to UTF-8 -->
+  <meta charset="UTF-8">
+  <!-- Ensure responsive viewport for mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Title displayed in the browser tab -->
+  <title>Zomato Orders</title>
+  <!-- Load Tailwind CSS from CDN for styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Remove default body margin and set font family */
+    body { margin: 0; font-family: Arial, sans-serif; }
+    /* Limit order card height with scroll overflow */
+    .order-card { max-height: 200px; overflow-y: auto; }
+    /* Restrict input group width for better layout */
+    .input-group { max-width: 200px; }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-4">
+    <!-- Main heading for the page -->
+    <h1 class="text-2xl font-bold mb-4 text-center">Zomato Orders</h1>
+
+    <!-- Container for buttons and input fields -->
+    <div class="mb-4 flex  sm:flex-row gap-4 items-center">
+      <!-- Button to fetch orders from the API -->
+      <button id="fetch-btn" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+        Fetch Orders
+      </button>
+      <!-- Group for limit and offset inputs with set button -->
+      <div class="flex gap-2 items-center input-group">
+        <!-- Input for setting the limit of orders to fetch -->
+        <input type="number" id="limit-input" class="border p-2 rounded" placeholder="Limit (e.g., 5)" min="1">
+        <!-- Input for setting the offset for pagination -->
+        <input type="number" id="offset-input" class="border p-2 rounded" placeholder="Offset (e.g., 0)" min="0">
+        <!-- Button to apply the limit and offset values -->
+        <button id="set-limit-offset-btn" class="p-6 bg-blue-500 text-white rounded hover:bg-blue-600 w-32 h-32">
+          Set Limit & Offset</button>
+      </div>
+    </div>
+
+    <!-- Container to display the list of orders -->
+    <div id="orders-container" class="grid gap-4"></div>
+
+    <!-- Display current page information -->
+    <div id="page-info" class="mt-4 text-center text-sm text-gray-600"></div>
+  </div>
+
+  <script>
+    // Initial limit and offset values for fetching orders
+    let limit = 10;
+    let offset = 0;
+    // Total number of orders (hardcoded based on data.js)
+    const totalOrders = 12;
+
+    // Function to fetch orders from the API and update the UI
+    function fetchOrders() {
+      fetch(`http://localhost:8080/api/orders?limit=${limit}&offset=${offset}`)
+        .then(response => {
+          // Check if the response is not OK and throw an error
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(orders => {
+          const container = document.getElementById('orders-container');
+          // Clear existing content in the orders container
+          container.innerHTML = '';
+
+          // Handle case where no orders are returned
+          if (orders.length === 0) {
+            container.innerHTML = '<p class="text-center text-red-500">No orders found.</p>';
+            document.getElementById('page-info').textContent = 'No pages available';
+            return;
+          }
+
+          // Loop through orders and create divs for each
+          orders.forEach(order => {
+            const orderDiv = document.createElement('div');
+            orderDiv.className = 'border p-4 mb-2 rounded shadow order-card';
+            orderDiv.innerHTML = `
+              <h3 class="text-lg font-bold">${order.title}</h3>
+              <p class="text-gray-600">${order.description}</p>
+              <p class="text-sm text-gray-500">ID: ${order._id}</p>
+            `;
+            container.appendChild(orderDiv);
+          });
+
+          // Calculate and display pagination information
+          const totalPages = Math.ceil(totalOrders / limit);
+          const currentPage = offset / limit + 1;
+          document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages}`;
+        })
+        .catch(error => {
+          // Log error to console and display failure message
+          console.error('Error fetching orders:', error);
+          document.getElementById('orders-container').innerHTML = '<p class="text-center text-red-500">Failed to load orders.</p>';
+        });
+    }
+
+    // Add event listener for the fetch button
+    document.getElementById('fetch-btn').addEventListener('click', () => {
+      fetchOrders();
+    });
+
+    // Add event listener for the set limit and offset button
+    document.getElementById('set-limit-offset-btn').addEventListener('click', () => {
+      // Get and validate new limit and offset values from inputs
+      const newLimit = parseInt(document.getElementById('limit-input').value) || 10;
+      const newOffset = parseInt(document.getElementById('offset-input').value) || 0;
+
+      if (Number.isInteger(newLimit) && newLimit > 0) limit = newLimit;
+      if (Number.isInteger(newOffset) && newOffset >= 0) offset = newOffset;
+
+      // Clear input fields after setting values
+      document.getElementById('limit-input').value = '';
+      document.getElementById('offset-input').value = '';
+      fetchOrders();
+    });
+
+    // Initial call to fetch orders when the page loads
+    fetchOrders();
+  </script>
+</body>
+</html>
