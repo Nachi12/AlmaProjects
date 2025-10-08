@@ -3,7 +3,7 @@ import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDvExttOFQDbPnIqLsZXSuGbwLc1N6sMvY",
+  apiKey: process.env.VITE_FIREBASE_API_KEY,
   authDomain: "connetct-834c8.firebaseapp.com",
   projectId: "connetct-834c8",
   storageBucket: "connetct-834c8.firebasestorage.app",
