@@ -1,16 +1,16 @@
-const { defineConfig } = require("vite");
-const react = require("@vitejs/plugin-react-swc");
-const path = require("path");
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
 
 export default defineConfig({
   server: {
-    host: "localhost", // local only
+    host: "localhost",
     port: 5173,
   },
   plugins: [react()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve("./src"),
     },
   },
   test: {
