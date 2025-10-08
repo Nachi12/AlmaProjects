@@ -2,7 +2,7 @@ const { defineConfig } = require("vite");
 const react = require("@vitejs/plugin-react-swc");
 const path = require("path");
 
-module.exports = defineConfig({
+export default defineConfig({
   server: {
     host: "localhost", // local only
     port: 5173,
