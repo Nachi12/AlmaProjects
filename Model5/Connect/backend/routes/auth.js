@@ -6,7 +6,8 @@ const User = require('../models/User');
 const { authenticate } = require('../middleware/auth'); // FIXED: Remove destructuring
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-
+const admin = require('../firebaseAdmin'); // Your firebase admin init file
+const crypto = require('crypto');
 
 
 // Generate JWT token
@@ -148,11 +149,18 @@ router.post('/google', [
   body('email').isEmail().withMessage('Valid email is required'),
   body('name').notEmpty().withMessage('Name is required'),
   body('googleId').notEmpty().withMessage('Google ID is required'),
+  body('idToken').notEmpty().withMessage('Firebase ID token is required'),
   handleValidationErrors
 ], async (req, res) => {
   try {
     const { email, name, googleId, profilePicture } = req.body;
 
+
+    // Verify Firebase ID token
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    if (decodedToken.email !== email) {
+      return res.status(401).json({ message: 'Invalid Firebase ID token' });
+    }
 
     // Check if user exists
     let user = await User.findOne({ email });
