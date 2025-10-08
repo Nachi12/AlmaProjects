@@ -1,19 +1,20 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const connection = require("./connector");
-const cors = require("cors");
-
+const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+const connection = require('./connector');
+const cors = require('cors'); // Must be installed
 
-// ✅ Enable CORS (important for APIs)
-app.use(cors());
+const port = 8080;
 
-// ✅ Parse JSON and URL-encoded data
+// Enable CORS for all origins (development setting)
+app.use(cors()); // Place this before other middleware
+
+// Parse JSON bodies and URL-encoded data
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// ✅ Define routes
-app.get("/api/orders", (req, res) => {
+// Endpoint for /api/orders with pagination
+app.get('/api/orders', (req, res) => {
   const limit = parseInt(req.query.limit) || 10;
   const offset = parseInt(req.query.offset) || 0;
 
@@ -23,21 +24,18 @@ app.get("/api/orders", (req, res) => {
   const finalLimit = isValidLimit ? limit : 10;
   const finalOffset = isValidOffset ? offset : 0;
 
-  const query = "SELECT * FROM orders LIMIT ? OFFSET ?";
+  const query = 'SELECT * FROM orders LIMIT ? OFFSET ?';
   connection.query(query, [finalLimit, finalOffset], (err, results) => {
     if (err) {
-      console.error("Error fetching orders:", err);
-      return res.status(500).json({ error: "Internal server error" });
+      console.error('Error fetching orders:', err);
+      return res.status(500).json({ error: 'Internal server error' });
     }
     res.status(200).json(results);
   });
 });
 
-// ✅ (Optional) Root route to verify deployment
-app.get("/", (req, res) => {
-  res.send("✅ Express + MySQL API is running on Vercel!");
+app.listen(port, () => {
+  console.log(`App listening on port ${port}!`);
 });
 
-// ❌ Remove app.listen()
-// ✅ Export app for Vercel serverless function
 module.exports = app;
