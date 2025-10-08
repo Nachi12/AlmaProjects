@@ -4,12 +4,9 @@
   "description": "Zomato-style capstone backend using Express and MySQL",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "build": "echo 'No build step required'"
+    "build": "echo 'No build step required'",
+    "start": "node index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",
