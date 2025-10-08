@@ -2,10 +2,10 @@
   "name": "capstone-project-zomato",
   "version": "1.0.0",
   "description": "Zomato-style capstone backend using Express and MySQL",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "build": "echo 'No build step required'",
-    "start": "node index.js"
+    "start": "node src/index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
