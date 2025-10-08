@@ -73,7 +73,7 @@ const Dashboard = () => {
 
       try {
         // Fetching interview data from backend
-        const res = await axios.get("http://localhost:5001/api/interviews", {
+        const res = await axios.get("${process.env.REACT_APP_API_URL}/api/interviews", {
           headers: { Authorization: `Bearer ${token}` },
         });
         dispatch(setInterviews(res.data.interviews)); // Updating Redux store
@@ -117,7 +117,7 @@ const Dashboard = () => {
       console.log("📡 Sending to backend...");
       
       // Sending POST request to backend to create new interview
-      const response = await fetch("http://localhost:5001/api/interviews", {
+      const response = await fetch("${process.env.REACT_APP_API_URL}/api/interviews", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -137,7 +137,7 @@ const Dashboard = () => {
         });
 
         // Refreshing interview list after successful creation
-        const res = await axios.get("http://localhost:5001/api/interviews", {
+        const res = await axios.get("${process.env.REACT_APP_API_URL}/api/interviews", {
           headers: { Authorization: `Bearer ${token}` },
         });
         dispatch(setInterviews(res.data.interviews));

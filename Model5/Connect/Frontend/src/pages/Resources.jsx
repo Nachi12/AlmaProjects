@@ -53,7 +53,7 @@ const Resources = () => {
       setLoading(true);
       try {
         // Replace with your actual API endpoint
-        const response = await fetch(`http://localhost:5001/api/questions?category=${selectedCategory}`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/questions?category=${selectedCategory}`);
         
         if (response.ok) {
           const data = await response.json();

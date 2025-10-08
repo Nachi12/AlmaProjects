@@ -95,7 +95,7 @@ const MyInterviews = () => {
       setLoading(true); // Show loading spinner
       try {
         // Fetch filtered interviews from backend
-        const res = await axios.get(`http://localhost:5001/api/interviews?status=${filter}`, {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/interviews?status=${filter}`, {
           headers: {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
