@@ -1,10 +1,11 @@
 {
-  "name": "capstone-project(zomoto)",
+  "name": "capstone-project-zomato",
   "version": "1.0.0",
-  "description": "",
+  "description": "Zomato-style capstone backend using Express and MySQL",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "build": "echo 'No build step required'"
   },
   "keywords": [],
   "author": "",
