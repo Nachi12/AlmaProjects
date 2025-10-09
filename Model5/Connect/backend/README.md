@@ -119,7 +119,7 @@ All errors return JSON with appropriate HTTP status codes:
 
 1. **Register a User**
 ```
-POST ${process.env.REACT_APP_API_URL}/api/auth/register
+POST ${import.meta.env.VITE_API_URL}/api/auth/register
 Body: {
   "name": "John Doe",
   "email": "john@example.com",
@@ -130,7 +130,7 @@ Body: {
 
 2. **Login**
 ```
-POST ${process.env.REACT_APP_API_URL}/api/auth/login
+POST ${import.meta.env.VITE_API_URL}/api/auth/login
 Body: {
   "email": "john@example.com",
   "password": "password123"
@@ -139,7 +139,7 @@ Body: {
 
 3. **Schedule Interview**
 ```
-POST ${process.env.REACT_APP_API_URL}/api/interviews
+POST ${import.meta.env.VITE_API_URL}/api/interviews
 Headers: {
   "x-auth-token": "<your_token>"
 }

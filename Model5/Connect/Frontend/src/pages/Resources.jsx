@@ -53,7 +53,7 @@ const Resources = () => {
       setLoading(true);
       try {
         // Replace with your actual API endpoint
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/questions?category=${selectedCategory}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/questions?category=${selectedCategory}`);
         
         if (response.ok) {
           const data = await response.json();

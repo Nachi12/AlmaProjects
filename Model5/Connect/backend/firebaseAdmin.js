@@ -1,10 +1,11 @@
+// backend/firebaseAdmin.js
 const admin = require('firebase-admin');
-const path = require('"./connetct-834c8-firebase-adminsdk-fbsvc-37d43f7d53.json"');
+const dotenv = require('dotenv');
+const path = require('path');
 
-// Path to your Firebase service account key file (download from Firebase console)
-const serviceAccountPath = path.resolve(__dirname, '../path/to/serviceAccountKey.json');
+dotenv.config(); // loads .env
 
-const serviceAccount = require("./connetct-834c8-firebase-adminsdk-fbsvc-37d43f7d53.json");
+const serviceAccount = require(path.resolve(process.env.GOOGLE_APPLICATION_CREDENTIALS));
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
