@@ -1,11 +1,8 @@
-// backend/firebaseAdmin.js
 const admin = require('firebase-admin');
-const dotenv = require('dotenv');
-const path = require('path');
+require('dotenv').config();
 
-dotenv.config(); // loads .env
-
-const serviceAccount = require(path.resolve(process.env.GOOGLE_APPLICATION_CREDENTIALS));
+// Parse Firebase key from environment variable (JSON string)
+const serviceAccount = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
