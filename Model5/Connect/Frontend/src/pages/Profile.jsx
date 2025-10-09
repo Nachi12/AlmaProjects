@@ -114,7 +114,7 @@ const Profile = () => {
       if (token) {
         try {
           // Call backend API to get current user data
-          const response = await fetch("${import.meta.env.VITE_API_URL}/api/auth/me", {
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
             headers: {
               Authorization: `Bearer ${token}`, // Include JWT token
             },
@@ -183,7 +183,7 @@ const Profile = () => {
 
     try {
       // Send PUT request to update profile endpoint
-      const response = await fetch("${import.meta.env.VITE_API_URL}/api/users/me", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/me`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
