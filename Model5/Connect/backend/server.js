@@ -55,7 +55,7 @@ const startServer = async () => {
       await connectDB();
       console.log('✅ MongoDB connected successfully');
     }
-
+  }
     // Start server only if not testing
 //     if (process.env.NODE_ENV !== 'test') {
 //       const PORT = process.env.PORT || 5001;
@@ -76,6 +76,6 @@ const startServer = async () => {
 if (require.main === module) {
   startServer();
 }
-
+}
 // Export app for testing
 module.exports = app;
