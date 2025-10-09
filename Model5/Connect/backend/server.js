@@ -24,11 +24,23 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 // Middleware
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://connect-frontend1.netlify.app'
+];
+
 app.use(cors({
-  origin: 'https://connect-frontend1.netlify.app/',
-  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  origin: (origin, cb) => {
+    if (!origin) return cb(null, true); // allow server-to-server / curl
+    if (allowedOrigins.includes(origin)) return cb(null, true);
+    return cb(new Error('Not allowed by CORS'));
+  },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
+
+app.options('*', cors());
 
 
 
