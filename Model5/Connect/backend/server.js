@@ -57,20 +57,20 @@ const startServer = async () => {
     }
 
     // Start server only if not testing
-    if (process.env.NODE_ENV !== 'test') {
-      const PORT = process.env.PORT || 5001;
-      app.listen(PORT, () => {
-        console.log('\n🚀 =================================');
-        console.log(`✅ Server running on port ${PORT}`);
-        console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
-        console.log('=================================\n');
-      });
-    }
-  } catch (error) {
-    console.error('❌ Failed to start server:', error);
-    process.exit(1);
-  }
-};
+//     if (process.env.NODE_ENV !== 'test') {
+//       const PORT = process.env.PORT || 5001;
+//       app.listen(PORT, () => {
+//         console.log('\n🚀 =================================');
+//         console.log(`✅ Server running on port ${PORT}`);
+//         console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+//         console.log('=================================\n');
+//       });
+//     }
+//   } catch (error) {
+//     console.error('❌ Failed to start server:', error);
+//     process.exit(1);
+//   }
+// };
 
 // Only start server if not being required by tests
 if (require.main === module) {
