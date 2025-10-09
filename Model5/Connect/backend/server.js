@@ -31,7 +31,7 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, cb) => {
-    if (!origin) return cb(null, true); // allow server-to-server / curl
+    if (!origin) return cb(null, true); // allow server-to-server/curl
     if (allowedOrigins.includes(origin)) return cb(null, true);
     return cb(new Error('Not allowed by CORS'));
   },
@@ -41,6 +41,7 @@ app.use(cors({
 }));
 
 app.options('*', cors());
+
 
 
 
