@@ -7,7 +7,7 @@ const authRoutes = require('./routes/auth');
 const interviewRoutes = require('./routes/interviews');
 const userRoutes = require('./routes/users');
 const resourceRoutes = require('./routes/resources');
-
+const serviceAccount = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 dotenv.config();
 
 const app = express();
