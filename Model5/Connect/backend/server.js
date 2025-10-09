@@ -24,7 +24,15 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://connect-frontend1.netlify.app/',
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  credentials: true
+}));
+
+
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
