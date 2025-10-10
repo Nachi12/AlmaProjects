@@ -55,7 +55,7 @@ const Index = () => {
         <section>
           {/* Background hero image */}
           <img 
-            src="public/Hero Section.jpg" 
+            src="/HeroSection.jpg" 
             class="w-screen lg:h-[520px] md:h-[200px] sm:h-[130px]" 
             alt="Hero Section" 
           />

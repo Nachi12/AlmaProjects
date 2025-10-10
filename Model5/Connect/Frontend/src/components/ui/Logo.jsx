@@ -22,7 +22,7 @@ const Logo = ({ className = "", size = "md", showText = true }) => {
         
       >
        
-        <img src="public/favicon.ico" alt=""/>
+        <img src="/favicon.ico" alt=""/>
         <div className="absolute inset-0  rounded-xl" />
         <motion.div
           className="absolute rounded-xl"
