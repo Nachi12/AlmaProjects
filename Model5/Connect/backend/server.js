@@ -47,6 +47,7 @@ app.options('*', cors());
 
 
 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -77,7 +78,7 @@ const startServer = async () => {
       await connectDB();
       console.log('✅ MongoDB connected successfully');
     }
-  }
+  
     // Start server only if not testing
 //     if (process.env.NODE_ENV !== 'test') {
 //       const PORT = process.env.PORT || 5001;
@@ -88,16 +89,16 @@ const startServer = async () => {
 //         console.log('=================================\n');
 //       });
 //     }
-//   } catch (error) {
-//     console.error('❌ Failed to start server:', error);
-//     process.exit(1);
-//   }
-// };
+  } catch (error) {
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
+  }
+};
 
 // Only start server if not being required by tests
 if (require.main === module) {
   startServer();
 }
-}
+
 // Export app for testing
 module.exports = app;
