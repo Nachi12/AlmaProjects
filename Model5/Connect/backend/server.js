@@ -8,10 +8,16 @@ const authRoutes = require('./routes/auth');
 const interviewRoutes = require('./routes/interviews');
 const userRoutes = require('./routes/users');
 const resourceRoutes = require('./routes/resources');
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-
 
 const app = express();
+
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+} else {
+  throw new Error("FIREBASE_SERVICE_ACCOUNT env variable is not set");
+}
+
+
 
 // CRITICAL: Log every single request (only in development)
 if (process.env.NODE_ENV !== 'test') {
