@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./db');
@@ -7,8 +8,8 @@ const authRoutes = require('./routes/auth');
 const interviewRoutes = require('./routes/interviews');
 const userRoutes = require('./routes/users');
 const resourceRoutes = require('./routes/resources');
-const serviceAccount = require('./firebase-key.json');
-dotenv.config();
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+
 
 const app = express();
 
