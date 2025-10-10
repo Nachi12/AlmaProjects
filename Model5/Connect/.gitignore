@@ -28,4 +28,4 @@ dist-ssr
 .env
 
 # Firebase Admin Keys
-*.json
+firebase-key.json
