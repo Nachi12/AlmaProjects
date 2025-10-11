@@ -58,3 +58,4 @@ connect-834c8-firebase-adminsdk-fbsvc-37d43f7d53.json
 *.pem
 *.crt
 *.key
+.vercel
