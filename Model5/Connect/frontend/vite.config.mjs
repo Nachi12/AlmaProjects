@@ -12,6 +12,9 @@ export default defineConfig({
     alias: {
       "@": path.resolve("./src"),
     },
+      build: {
+    outDir: "dist",
+  },
   },
   test: {
     globals: true,
