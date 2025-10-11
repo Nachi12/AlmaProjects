@@ -24,8 +24,10 @@ dist-ssr
 *.sw?
 # Ignore Firebase service account key
 ./connetct-834c8-firebase-adminsdk-fbsvc-37d43f7d53.json
+
 # .gitignore
 .env
+.env.privacy
 
 # Firebase Admin Keys
 firebase-key.json
