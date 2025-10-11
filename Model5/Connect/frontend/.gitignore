@@ -1,4 +1,6 @@
-# Logs
+# --------------------------------------------------
+# 🔍 LOG FILES
+# --------------------------------------------------
 logs
 *.log
 npm-debug.log*
@@ -7,25 +9,35 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# --------------------------------------------------
+# 📦 DEPENDENCIES & BUILD OUTPUTS
+# --------------------------------------------------
+node_modules/
+dist/
+build/
+.out/
+.next/
+coverage/
 *.local
 
-# Editor directories and files
+# --------------------------------------------------
+# 💻 EDITOR & SYSTEM FILES
+# --------------------------------------------------
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-# Ignore Firebase service account key
-./connetct-834c8-firebase-adminsdk-fbsvc-37d43f7d53.json
-# .gitignore
-.env
 
-# Firebase Admin Keys
-firebase-key.json
+# --------------------------------------------------
+# 🔐 ENVIRONMENT VARIABLES
+# --------------------------------------------------
+.env
+.env.*
+*.env
+.env.local
+.env.development.local
