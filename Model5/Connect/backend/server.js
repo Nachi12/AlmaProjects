@@ -126,7 +126,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.options('*', cors());
+app.options('*', cors(allowedOrigins));
 
 // ===== Body Parsers =====
 app.use(express.json());
