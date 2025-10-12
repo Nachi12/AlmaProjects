@@ -80,6 +80,12 @@
 // }
 
 // module.exports = app;
+
+
+
+
+
+// new code
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -112,7 +118,7 @@ if (process.env.NODE_ENV !== 'test') {
 // ===== CORS Setup =====
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://connect-frontend1.netlify.app'
+  'https://alma-projects-eig5g792i-nachiketa-nrs-projects.vercel.app/'
 ];
 
 app.use(cors({
