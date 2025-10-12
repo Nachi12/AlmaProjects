@@ -10,7 +10,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@": path.resolve("./src"),
+      '@': new URL('./src', import.meta.url).pathname,
     },
       build: {
     outDir: "dist",
