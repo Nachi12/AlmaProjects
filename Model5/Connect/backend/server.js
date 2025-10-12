@@ -118,7 +118,7 @@ if (process.env.NODE_ENV !== 'test') {
 // ===== CORS Setup =====
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://alma-projects-eig5g792i-nachiketa-nrs-projects.vercel.app/'
+  'https://alma-projects-eig5g792i-nachiketa-nrs-projects.vercel.app'
 ];
 
 app.use(cors({
