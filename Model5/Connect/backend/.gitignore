@@ -1,6 +1,4 @@
-# --------------------------------------------------
-# 🔍 LOG FILES
-# --------------------------------------------------
+# Logs
 logs
 *.log
 npm-debug.log*
@@ -9,53 +7,27 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# --------------------------------------------------
-# 📦 DEPENDENCIES & BUILD OUTPUTS
-# --------------------------------------------------
-node_modules/
-dist/
-dist-ssr/
+node_modules
+dist
+dist-ssr
 *.local
 
-# --------------------------------------------------
-# 💻 EDITOR DIRECTORIES & SYSTEM FILES
-# --------------------------------------------------
+# Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea/
+.idea
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+# Ignore Firebase service account key
+./connetct-834c8-firebase-adminsdk-fbsvc-37d43f7d53.json
 
-# --------------------------------------------------
-# 🔐 ENVIRONMENT & PRIVATE FILES
-# --------------------------------------------------
+# .gitignore
 .env
-.env.*
-*.env
 .env.privacy
 
-# --------------------------------------------------
-# 🔥 FIREBASE / GOOGLE SERVICE ACCOUNT KEYS
-# --------------------------------------------------
-# Match any Firebase service account or admin SDK JSON
+# Firebase Admin Keys
 firebase-key.json
-firebase-adminsdk-*.json
-*-firebase-adminsdk-*.json
-*.serviceAccountKey.json
-*.firebase.json
-*.gcloud.json
-
-# You had this earlier — correcting the spelling:
-connect-834c8-firebase-adminsdk-fbsvc-37d43f7d53.json
-
-# --------------------------------------------------
-# 🧪 OTHER SENSITIVE OR CONFIG FILES
-# --------------------------------------------------
-*.pem
-*.crt
-*.key
-.vercel
