@@ -42,4 +42,4 @@ coverage/
 .env.local
 .env.development.local
 .vercel
-# This ius the gitignore and this will update will update now
+# This ius the gitignore and this will update will update now and will
