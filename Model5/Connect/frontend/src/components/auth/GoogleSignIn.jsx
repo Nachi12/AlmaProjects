@@ -16,8 +16,8 @@ const GoogleSignIn = () => {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
-      // const result = await signInWithPopup(auth, googleProvider);
-      signInWithRedirect(auth, provider);
+      const result = await signInWithPopup(auth, googleProvider);
+      // signInWithRedirect(auth, provider);
       const user = result.user;
       
       // Send to backend to create/update user
