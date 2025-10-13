@@ -94,7 +94,6 @@ const cors = require('cors');
 const path = require('path');
 const connectDB = require('./db');
 const admin = require('./firebaseAdmin');
-
 const authRoutes = require('./routes/auth');
 const interviewRoutes = require('./routes/interviews');
 const userRoutes = require('./routes/users');

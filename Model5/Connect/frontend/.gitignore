@@ -43,3 +43,8 @@ coverage/
 .env.development.local
 .vercel
 # This ius the gitignore and this will update 
+
+# This is the VITE API
+# https://alma-projects-zeta.vercel.app
+
+# https://localhost:5001
