@@ -19,6 +19,7 @@ const GoogleSignIn = () => {
       const result = await signInWithPopup(auth, googleProvider);
       // signInWithRedirect(auth, provider);
       const user = result.user;
+      const idToken = await user.getIdToken();
       
       // Send to backend to create/update user
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/google`, {
@@ -28,7 +29,8 @@ const GoogleSignIn = () => {
           email: user.email,
           name: user.displayName,
           googleId: user.uid,
-          profilePicture: user.photoURL
+          profilePicture: user.photoURL,
+           idToken
         })
       });
 
