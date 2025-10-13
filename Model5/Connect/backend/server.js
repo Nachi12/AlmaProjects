@@ -116,8 +116,8 @@ if (process.env.NODE_ENV !== 'test') {
 // ===== CORS Setup =====
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://connect-frontend1.netlify.app/', // ✅ Netlify frontend
-  'https://alma-projects-eig5g792i-nachiketa-nrs-projects.vercel.app' // (optional if backend calls itself)
+  'https://connect-frontend1.netlify.app', // ✅ Netlify frontend
+   // (optional if backend calls itself)
 ];
 
 app.use(
