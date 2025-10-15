@@ -217,66 +217,86 @@ const CharComponent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCryptos, timeRange, dateRange.start, dateRange.end, currency, cryptos.length]);
 
-  // Chart options (line & bar share many options)
-  const chartOptions = useMemo(() => {
+
+// Chart options (line & bar share many options)
+const chartOptions = useMemo(() => {
+  const baseOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: {
+      // we hide the built-in legend because we'll render a custom legend to the top-right (like your images)
+      legend: { display: false },
+      // Add this to disable data labels on the chart
+      datalabels: {
+        display: false
+      },
+      tooltip: {
+        enabled: true,
+        mode: "index",
+        intersect: false,
+        callbacks: {
+          label: function (ctx) {
+            const val = ctx.parsed.y;
+            if (val === null || val === undefined) return `${ctx.dataset.label}: —`;
+            return `${ctx.dataset.label}: ${new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: currency.toUpperCase(),
+              maximumFractionDigits: 2,
+              notation: "compact",
+            }).format(val)}`;
+          },
+        },
+      },
+      title: { display: false },
+    },
+    scales: {
+      x: {
+        grid: { display: true, color: "rgba(0,0,0,0.04)" },
+        ticks: { color: "#475569", maxRotation: 0, autoSkip: true, maxTicksLimit: 10 },
+      },
+      y: {
+        grid: { display: true, color: "rgba(0,0,0,0.04)" },
+        ticks: {
+          color: "#475569",
+          callback: (val) =>
+            new Intl.NumberFormat("en-US", {
+              notation: "compact",
+              maximumFractionDigits: 1,
+              style: "currency",
+              currency: currency.toUpperCase(),
+            }).format(Number(val)),
+        },
+      },
+    },
+    elements: {
+      point: { radius: 0 }, // hides dots
+      line: { borderWidth: 2 },
+      bar: { borderWidth: 1 },
+    },
+    // make lines visually smooth and connect small gaps
+    spanGaps: true,
+  };
+
+  // Add bar-specific configuration for less congested bars
+  if (chartType === "bar") {
     return {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: "index", intersect: false },
-      plugins: {
-        // we hide the built-in legend because we'll render a custom legend to the top-right (like your images)
-        legend: { display: false },
-        // Add this to disable data labels on the chart
-        datalabels: {
-          display: false
-        },
-        tooltip: {
-          enabled: true,
-          mode: "index",
-          intersect: false,
-          callbacks: {
-            label: function (ctx) {
-              const val = ctx.parsed.y;
-              if (val === null || val === undefined) return `${ctx.dataset.label}: —`;
-              return `${ctx.dataset.label}: ${new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: currency.toUpperCase(),
-                maximumFractionDigits: 2,
-                notation: "compact",
-              }).format(val)}`;
-            },
-          },
-        },
-        title: { display: false },
-      },
+      ...baseOptions,
       scales: {
+        ...baseOptions.scales,
         x: {
-          grid: { display: true, color: "rgba(0,0,0,0.04)" },
-          ticks: { color: "#475569", maxRotation: 0, autoSkip: true, maxTicksLimit: 10 },
-        },
-        y: {
-          grid: { display: true, color: "rgba(0,0,0,0.04)" },
-          ticks: {
-            color: "#475569",
-            callback: (val) =>
-              new Intl.NumberFormat("en-US", {
-                notation: "compact",
-                maximumFractionDigits: 1,
-                style: "currency",
-                currency: currency.toUpperCase(),
-              }).format(Number(val)),
-          },
+          ...baseOptions.scales.x,
+          categoryPercentage: 0.6,  // Controls spacing between groups of bars (0.6 = more spacing)
+          barPercentage: 0.8,       // Controls width of individual bars (0.8 = slightly thinner)
         },
       },
-      elements: {
-        point: { radius: 0 }, // hides dots
-        line: { borderWidth: 2 },
-        bar: { borderWidth: 1 },
-      },
-      // make lines visually smooth and connect small gaps
-      spanGaps: true,
     };
-  }, [currency]);
+  }
+
+  return baseOptions;
+}, [currency, chartType]);
+
+
 
   // small helper to render our legend resembling your design (colored circle + label)
   const LegendBlock = ({ datasets = [] }) => {
@@ -313,7 +333,7 @@ const CharComponent = () => {
       {/* Controls */}
       <div className="flex flex-col lg:flex-row lg:items-center sm:items-start   gap-4 justify-between  flex-wrap" id="sub-container">
         {/* Left: Time range */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 ">
           {Object.keys(timeRangeMap).map((k) => {
             const days = timeRangeMap[k];
             return (
@@ -325,8 +345,8 @@ const CharComponent = () => {
                 }}
                 className={`px-4 py-2 rounded-xl font-medium text-sm transition-shadow ${
                   String(timeRange) === String(days) && !dateRange.start
-                    ? "bg-blue-50 text-blue-700 ring-2 ring-blue-100"
-                    : "bg-white border border-gray-100 text-gray-700"
+                    ? "bg-blue-50  text-blue-700 ring-2 ring-blue-100"
+                    : "bg-white border hover:bg-blue-100 border-gray-100 text-gray-700"
                 }`}
               >
                 {k}
@@ -338,17 +358,17 @@ const CharComponent = () => {
           <div className="flex items-center gap-2 ml-2 bg-white border sm:flex-wrap border-gray-100 rounded-xl p-2">
             <input
               type="date"
-              className="text-sm px-2 py-1 border border-transparent rounded-md focus:outline-none"
+              className="text-sm px-2 py-1 border border-transparent rounded-md focus:outline-none hover:bg-blue-100 "
               value={dateRange.start}
               onChange={(e) => {
                 setDateRange((p) => ({ ...p, start: e.target.value }));
                 setTimeRange("");
               }}
             />
-            <span className="text-sm text-gray-400">—</span>
+            <span className="text-sm text-gray-400 ">—</span>
             <input
               type="date"
-              className="text-sm px-2 py-1 border border-transparent rounded-md focus:outline-none"
+              className="text-sm px-2 py-1 border border-transparent rounded-md focus:outline-none hover:bg-blue-100"
               value={dateRange.end}
               onChange={(e) => {
                 setDateRange((p) => ({ ...p, end: e.target.value }));
@@ -365,7 +385,7 @@ const CharComponent = () => {
             <select
               onChange={handleCryptoSelection}
               value="" // Always keep it empty to show placeholder
-              className="px-4 py-2 rounded-xl border border-gray-100 bg-white text-sm"
+              className="px-4 py-2 rounded-xl border-1 border-gray-100 bg-white text-sm hover:bg-blue-100 selected:border-0"
             >
               <option value="" disabled>
                 Add cryptocurrency
@@ -384,7 +404,7 @@ const CharComponent = () => {
           <select
             value={chartType}
             onChange={(e) => setChartType(e.target.value)}
-            className="px-4 py-2 rounded-xl border border-gray-100 bg-white text-sm"
+            className="px-4 py-2 rounded-xl border border-gray-100 bg-white text-sm hover:bg-blue-100"
           >
             <option value="line">Line</option>
             <option value="bar">Bar</option>

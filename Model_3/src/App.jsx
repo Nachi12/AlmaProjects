@@ -46,7 +46,7 @@ function App() {
     <>
       <div
         id="mainContainer"
-        className="min-h-screen flex items-center justify-center border-2  max-w-screen-xl  sm:px-6 lg:px-24 "
+        className="min-h-screen flex items-center justify-center   max-w-screen-xl  sm:px-6 lg:px-24 "
       >
         <div className="w-full"> 
           <Logo />
