@@ -29,5 +29,5 @@ dist-ssr
 .env
 .env.privacy
 
-# Firebase Admin Keys asd asd
+# Firebase Admin Keys asd asd heroku@9380552034
 firebase-key.json

@@ -98,7 +98,7 @@ const authRoutes = require('./routes/auth');
 const interviewRoutes = require('./routes/interviews');
 const userRoutes = require('./routes/users');
 const resourceRoutes = require('./routes/resources');
-
+const uri = process.env.MONGO_URI;
 const app = express();
 
 // ===== Logger Middleware (Only in non-test) =====
@@ -171,7 +171,7 @@ const startServer = async () => {
       await connectDB();
       console.log('✅ MongoDB connected successfully');
       const PORT = process.env.PORT || 5001;
-      app.listen(PORT, () => {
+      app.listen(PORT, "0.0.0.0", () => {
         console.log(`✅ Server running on port ${PORT}`);
         console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
       });
@@ -181,6 +181,7 @@ const startServer = async () => {
     process.exit(1);
   }
 };
+
 
 if (require.main === module) {
   startServer();
