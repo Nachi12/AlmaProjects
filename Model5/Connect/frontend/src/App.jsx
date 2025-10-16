@@ -17,7 +17,7 @@ import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
-
+import InterviewRoom from './pages/InterviewRoom';
 const queryClient = new QueryClient();
 
 // Protected Route Component
@@ -47,7 +47,7 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-
+            <Route path="/interview-room/:interviewId" element={<InterviewRoom />} />
             {/* Protected Routes */}
             <Route
               path="/dashboard"

@@ -51,6 +51,15 @@ const interviewSchema = new Schema({
   feedback: {
     type: String,
     default: ''
+  },
+  completedAt: {
+    type: Date,
+    default: null
+  },
+    status: {
+    type: String,
+    enum: ['scheduled', 'upcoming', 'completed', 'cancelled'],
+    default: 'scheduled'
   }
 }, { timestamps: true });
 

@@ -7,12 +7,24 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 
+
 // GET /api/interviews - Get all interviews for authenticated user
 router.get('/', authenticate, async (req, res) => {
   try {
     console.log('📥 GET /api/interviews - User ID:', req.userId);
+    console.log('📥 Query params:', req.query);
     
-    const interviews = await Interview.find({ owner: req.userId })
+    const { status } = req.query;
+    let filter = { owner: req.userId };
+    
+    // Add status filtering
+    if (status === 'upcoming') {
+      filter.status = { $in: ['scheduled', 'upcoming'] };
+    } else if (status === 'completed') {
+      filter.status = 'completed';
+    }
+    
+    const interviews = await Interview.find(filter)
       .sort({ date: 1, time: 1 });
 
     console.log('✅ Found interviews:', interviews.length);
@@ -30,6 +42,7 @@ router.get('/', authenticate, async (req, res) => {
     });
   }
 });
+
 
 // POST /api/interviews - Create new interview
 router.post('/', 
@@ -132,6 +145,51 @@ router.get('/:id', authenticate, async (req, res) => {
     });
   }
 });
+
+
+
+// PATCH /api/interviews/:id/complete - Mark interview as completed
+router.patch('/:id/complete', authenticate, async (req, res) => {
+  try {
+    console.log('✅ PATCH /api/interviews/:id/complete - ID:', req.params.id);
+    
+    const interview = await Interview.findOneAndUpdate(
+      { _id: req.params.id, owner: req.userId },
+      { 
+        status: 'completed',
+        completedAt: new Date(),
+        updatedAt: new Date()
+      },
+      { new: true }
+    );
+    
+    if (!interview) {
+      console.log('❌ Interview not found or unauthorized');
+      return res.status(404).json({
+        success: false,
+        message: 'Interview not found or unauthorized'
+      });
+    }
+    
+    console.log('✅ Interview marked as completed');
+    res.status(200).json({ 
+      success: true,
+      message: 'Interview completed successfully', 
+      interview: interview
+    });
+  } catch (error) {
+    console.error('❌ Error completing interview:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to complete interview',
+      error: error.message
+    });
+  }
+});
+
+
+
+
 
 // PUT /api/interviews/:id - Update interview
 router.put('/:id', authenticate, async (req, res) => {
