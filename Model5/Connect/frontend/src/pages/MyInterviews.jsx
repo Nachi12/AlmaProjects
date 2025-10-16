@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setInterviews } from "@/store/slices/interviewSlice";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+
 import {
   Select,
   SelectContent,
@@ -31,6 +33,7 @@ import axios from "axios";
 // ------------------- MAIN COMPONENT -------------------
 const MyInterviews = () => {
   const dispatch = useDispatch();
+const navigate = useNavigate();
 
   // Local state management
   const [interviews, setInterviewsState] = useState([]); // All fetched interviews
@@ -191,10 +194,9 @@ const MyInterviews = () => {
     return true;
   });
 
-
-  const handleStartInterview = (interviewId) => {
-  // Navigate to interview room
-  window.open(`/interview-room/${interviewId}`, '_blank');
+const handleStartInterview = (interviewId) => {
+  // Navigate client-side, avoids full page reload and 404
+  navigate(`/interview-room/${interviewId}`);
 };
 
   // Sort by date or type
