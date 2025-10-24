@@ -158,6 +158,10 @@ app.get('/', (req, res) => {
 app.post('/api/interviews/test', (req, res) => {
   res.json({ message: 'Test route working', body: req.body });
 });
+// used for warming the backend
+app.get('/ping', (req, res) => {
+  res.json({ status: 'ok' });
+});
 
 app.use('/api/auth', authRoutes);
 app.use('/api/interviews', interviewRoutes);
