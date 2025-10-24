@@ -110,9 +110,6 @@ const Footer = () => {
             <p className="text-sm text-muted-foreground">
               © {currentYear} connect. All rights reserved.
             </p>
-            <p className="text-sm text-muted-foreground flex items-center gap-1">
-              Made with <FaHeart className="h-3 w-3 text-destructive" /> by connect Team
-            </p>
           </div>
         </div>
       </div>

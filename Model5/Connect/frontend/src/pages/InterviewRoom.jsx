@@ -28,23 +28,6 @@ const InterviewRoom = () => {
     }
   };
 
-//   const endInterview = async () => {
-//     try {
-//       const token = localStorage.getItem("token");
-//       await axios.patch(`${import.meta.env.VITE_API_URL}/api/interviews/${interviewId}/complete`, 
-//         { status: 'completed' },
-//         { headers: { "Authorization": `Bearer ${token}` } }
-//       );
-      
-//       alert("Interview completed successfully!");
-//       navigate("/my-interviews");
-//     } catch (error) {
-//       console.error("Failed to end interview:", error);
-//       alert("Failed to end interview. Please try again.");
-//     }
-//   };
-
-
 const endInterview = async () => {
   try {
     const token = localStorage.getItem("token");
