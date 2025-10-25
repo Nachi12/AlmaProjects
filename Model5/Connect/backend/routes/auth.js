@@ -217,18 +217,93 @@ router.post(
   }
 );
 
+
 // @route   GET /api/auth/me
 // @desc    Get current user
 // @access  Private
 router.get("/me", authenticate, async (req, res) => {
   try {
+    console.log("📥 GET /api/auth/me - User ID:", req.userId);
+    
+    // Use req.userId (set by authenticate middleware)
+    const user = await User.findById(req.userId).select('-password');
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     res.json({
-      user: req.user,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        contact: user.contact,
+        dob: user.dob,
+         createdAt: user.createdAt,
+      },
     });
   } catch (error) {
+    console.error("Get user error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
+// @route PUT /api/auth/me
+// @desc Update current user profile
+// @access Private
+router.put("/me", authenticate, async (req, res) => {
+  try {
+    console.log("📝 PUT /me - userId:", req.userId);
+    console.log("📦 Body:", req.body);
+    
+    // FIXED: Use req.userId instead of req.user._id
+    const user = await User.findById(req.userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update only editable fields
+    if (req.body.name) user.name = req.body.name;
+    if (req.body.contact) user.contact = req.body.contact;
+    if (req.body.dob) user.dob = req.body.dob;
+
+    // Save updated user
+    const updatedUser = await user.save();
+
+    console.log("✅ Profile updated successfully");
+
+    // Return updated user data
+    res.json({
+      message: "Profile updated successfully",
+      user: {
+        id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        contact: updatedUser.contact,
+        dob: updatedUser.dob,
+       
+      },
+    });
+  } catch (error) {
+    console.error("❌ Update profile error:", error);
+    res.status(500).json({ 
+      message: "Failed to update profile", 
+      error: error.message 
+    });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
 
 // @route   POST /api/auth/logout
 // @desc    Logout user (client-side token removal)

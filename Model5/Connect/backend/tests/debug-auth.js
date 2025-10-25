@@ -55,7 +55,7 @@ describe('Auth Routes', () => {
         // Check what property contains the token in your response
         expect(response.body).toHaveProperty('token');
       }
-    }, 15000);
+    }, 15001);
 
     it('should return error if user already exists', async () => {
       // Mock User.findOne to return existing user

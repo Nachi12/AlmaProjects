@@ -57,7 +57,7 @@ Backend Setup
 - npm install
 - Create .env
   - NODE_ENV=development
-  - PORT=5000
+  - PORT=5001
   - MONGODB_URI=mongodb://127.0.0.1:27017/connect
   - JWT_SECRET=change_this_in_production
   - FRONTEND_URL=http://localhost:5173
@@ -69,7 +69,7 @@ Frontend Setup (if in separate Frontend/)
 - cd Frontend
 - npm install
 - Create .env
-  - VITE_API_URL=http://localhost:5000/api
+  - VITE_API_URL=http://localhost:5001/api
 - Run
   - npm run dev
 - Build
@@ -81,13 +81,13 @@ Environment Variables
 
 Backend
 - NODE_ENV: development | production
-- PORT: default 5000
+- PORT: default 5001
 - MONGODB_URI: Mongo connection string
 - JWT_SECRET: secret key for tokens
 - FRONTEND_URL: CORS origin for frontend
 
 Frontend
-- VITE_API_URL: http://localhost:5000/api (adjust for production)
+- VITE_API_URL: http://localhost:5001/api (adjust for production)
 - Optional OAuth keys (e.g., VITE_GOOGLE_CLIENT_ID)
 
 Scripts
@@ -118,7 +118,7 @@ Backend (Jest + Supertest)
 API (Examples)
 
 Base URL
-- Local: http://localhost:5000/api
+- Local: http://localhost:5001/api
 
 Auth
 - POST /auth/register: { name, email, password, contact }
