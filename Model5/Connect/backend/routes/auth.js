@@ -161,7 +161,7 @@ router.post(
   ],
   async (req, res) => {
     try {
-      const { email, name, googleId, profilePicture,idToken } = req.body;
+      const { email, name, googleId, profilePicture, idToken } = req.body;
 
       console.log("🧩 Received Google sign-in body:", req.body);
       // Verify Firebase ID token
@@ -217,17 +217,16 @@ router.post(
   }
 );
 
-
 // @route   GET /api/auth/me
 // @desc    Get current user
 // @access  Private
 router.get("/me", authenticate, async (req, res) => {
   try {
     console.log("📥 GET /api/auth/me - User ID:", req.userId);
-    
+
     // Use req.userId (set by authenticate middleware)
-    const user = await User.findById(req.userId).select('-password');
-    
+    const user = await User.findById(req.userId).select("-password");
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -239,7 +238,7 @@ router.get("/me", authenticate, async (req, res) => {
         email: user.email,
         contact: user.contact,
         dob: user.dob,
-         createdAt: user.createdAt,
+        createdAt: user.createdAt,
       },
     });
   } catch (error) {
@@ -255,7 +254,7 @@ router.put("/me", authenticate, async (req, res) => {
   try {
     console.log("📝 PUT /me - userId:", req.userId);
     console.log("📦 Body:", req.body);
-    
+
     // FIXED: Use req.userId instead of req.user._id
     const user = await User.findById(req.userId);
 
@@ -266,7 +265,12 @@ router.put("/me", authenticate, async (req, res) => {
     // Update only editable fields
     if (req.body.name) user.name = req.body.name;
     if (req.body.contact) user.contact = req.body.contact;
-    if (req.body.dob) user.dob = req.body.dob;
+    if (req.body.dob) {
+      const parsedDate = new Date(req.body.dob);
+      if (!isNaN(parsedDate)) {
+        user.dob = parsedDate.toISOString().split("T")[0];
+      }
+    }
 
     // Save updated user
     const updatedUser = await user.save();
@@ -282,28 +286,16 @@ router.put("/me", authenticate, async (req, res) => {
         email: updatedUser.email,
         contact: updatedUser.contact,
         dob: updatedUser.dob,
-       
       },
     });
   } catch (error) {
     console.error("❌ Update profile error:", error);
-    res.status(500).json({ 
-      message: "Failed to update profile", 
-      error: error.message 
+    res.status(500).json({
+      message: "Failed to update profile",
+      error: error.message,
     });
   }
 });
-
-
-
-
-
-
-
-
-
-
-
 
 // @route   POST /api/auth/logout
 // @desc    Logout user (client-side token removal)

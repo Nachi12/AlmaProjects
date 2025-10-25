@@ -130,7 +130,7 @@ const Profile = () => {
               name: data.user.name || "",
               email: data.user.email || "",
               contact: data.user.contact || "",
-              dob: data.user.dob || "",
+              dob: data.user.dob ? data.user.dob.split("T")[0] : "",
             });
             
             // Update localStorage cache for next visit
@@ -164,78 +164,161 @@ const Profile = () => {
    * 
    * @param {Event} e - Form submit event
    * @async
-   */
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  */
+
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
     
-    // Retrieve authentication token
-    const token = localStorage.getItem("token");
+  //   // Retrieve authentication token
+  //   const token = localStorage.getItem("token");
     
-    // Validate user is authenticated
-    if (!token) {
+  //   // Validate user is authenticated
+  //   if (!token) {
+  //     toast({
+  //       title: "Error",
+  //       description: "Please login again",
+  //       variant: "destructive",
+  //     });
+  //     return;
+  //   }
+
+  //   try {
+  //     // Send PUT request to update profile endpoint
+  //     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
+  //       method: "PUT",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`, // JWT authentication
+  //       },
+  //       body: JSON.stringify({
+  //         name: formData.name,
+  //         contact: formData.contact,
+  //         dob: formData.dob,
+  //         // Email is intentionally NOT included (non-editable)
+  //       }),
+  //     });
+
+  //     const data = await response.json();
+
+  //     // Handle successful update
+  //     if (response.ok) {
+  //       // Update local component state
+  //       setUser(data.user);
+        
+  //       // Update localStorage cache
+  //       localStorage.setItem("user", JSON.stringify(data.user));
+        
+  //       // Dispatch Redux action to update global state
+  //       dispatch(updateProfile(data.user));
+        
+  //       // Show success notification
+  //       toast({
+  //         title: "Profile Updated",
+  //         description: "Your profile has been successfully updated.",
+  //       });
+        
+  //       // Exit edit mode
+  //       setIsEditing(false);
+  //     } else {
+  //       // Handle API error response
+  //       toast({
+  //         title: "Update Failed",
+  //         description: data.message || "Failed to update profile",
+  //         variant: "destructive",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     // Handle network errors
+  //     console.error("Update error:", error);
+  //     toast({
+  //       title: "Error",
+  //       description: "Failed to update profile",
+  //       variant: "destructive",
+  //     });
+  //   }
+  // };
+
+
+
+
+// ///**
+//   Formats date string to YYYY-MM-DD (for backend compatibility)
+//  
+const formatDateForBackend = (dateString) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  // Ensure valid date
+  if (isNaN(date)) return "";
+  // Format to YYYY-MM-DD
+  return date.toISOString().split("T")[0];
+};
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    toast({
+      title: "Error",
+      description: "Please login again",
+      variant: "destructive",
+    });
+    return;
+  }
+
+  try {
+    // Convert DOB before sending
+    const formattedDob = formatDateForBackend(formData.dob);
+
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        name: formData.name,
+        contact: formData.contact,
+        dob: formattedDob, // ensure consistent backend format
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      setUser(data.user);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      dispatch(updateProfile(data.user));
+
       toast({
-        title: "Error",
-        description: "Please login again",
+        title: "Profile Updated",
+        description: "Your profile has been successfully updated.",
+      });
+      setIsEditing(false);
+    } else {
+      toast({
+        title: "Update Failed",
+        description: data.message || "Failed to update profile",
         variant: "destructive",
       });
-      return;
     }
+  } catch (error) {
+    console.error("Update error:", error);
+    toast({
+      title: "Error",
+      description: "Failed to update profile",
+      variant: "destructive",
+    });
+  }
+};
 
-    try {
-      // Send PUT request to update profile endpoint
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // JWT authentication
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          contact: formData.contact,
-          dob: formData.dob,
-          // Email is intentionally NOT included (non-editable)
-        }),
-      });
 
-      const data = await response.json();
 
-      // Handle successful update
-      if (response.ok) {
-        // Update local component state
-        setUser(data.user);
-        
-        // Update localStorage cache
-        localStorage.setItem("user", JSON.stringify(data.user));
-        
-        // Dispatch Redux action to update global state
-        dispatch(updateProfile(data.user));
-        
-        // Show success notification
-        toast({
-          title: "Profile Updated",
-          description: "Your profile has been successfully updated.",
-        });
-        
-        // Exit edit mode
-        setIsEditing(false);
-      } else {
-        // Handle API error response
-        toast({
-          title: "Update Failed",
-          description: data.message || "Failed to update profile",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      // Handle network errors
-      console.error("Update error:", error);
-      toast({
-        title: "Error",
-        description: "Failed to update profile",
-        variant: "destructive",
-      });
-    }
-  };
+
+
+
 
   /**
    * Handles cancel button click in edit mode
@@ -444,7 +527,7 @@ const Profile = () => {
                 {/* User ID Display */}
                 <div className="space-y-1">
                   <p className="text-sm text-muted-foreground">User ID</p>
-                  <p className="font-mono text-sm">{user?._id || "N/A"}</p>
+                  <p className="font-mono text-sm">{user?.id || "N/A"}</p>
                 </div>
               </CardContent>
             </Card>
